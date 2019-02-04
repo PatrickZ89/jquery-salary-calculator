@@ -6,11 +6,10 @@ $(document).ready(onReady);
 
 function onReady(){
     console.log('jQuery is ready');
-                                //NEEDED A DESCENDENT SELECTOR
-    // $('#penguinBody').on('click', '.deleteButton', handleDeleteClick);
+                              
     $('#submitButton').on('click', handleSubmitClick);
     $('#totalMonthlyDiv').text(totalMonthly);
-    $('table').on('click', '.deleteButton' , deleteFunct);
+    $('#employeeTable').on('click', '.deleteButton' , deleteFunct);
 
     addObjectsToTable();
     addingTotals();
@@ -47,7 +46,7 @@ function addObjectsToTable() {
                 <td> ${employeeObjects[i].id} </td>
                 <td> ${employeeObjects[i].title} </td>
                 <td> ${employeeObjects[i].annualSalary} </td>
-                <td><button id="deleteButton">Delete</button></td>
+                <td><button class="deleteButton">Delete</button></td>
             </tr>`
             )
     }
@@ -103,21 +102,42 @@ function addingTotals() {
 
    console.log(totalMonthly);
    
+  
+   }
 
-$('#totalMonthlyDiv').text(totalMonthly);   
-    }
+$('#totalMonthlyDiv').text(totalMonthly.toFixed(2));   
+    
 }
 
+
+
+//delete button function
 function deleteFunct(){
     console.log('deleting');
-    $(this).parent().parent().remove();
+   // determining which row was clicked 
+    let row = $(this).closest("tr").index();
 
-    console.log($(this).parent());
+    console.log('row clicked:', row);
 
+  //removing employee from the array
+
+    employeeObjects.splice(row - 1, 1);
+  
+    console.log(employeeObjects);
+    
+  
+    //removing row from table
+   $(this).parent().parent().remove();
+   
+//totalling new monthly
 
     totalMonthly = 0
+
     addingTotals()
 
+    if (employeeObjects === []) {
+        totalMonthly = 0
+    }
 
 }
 
